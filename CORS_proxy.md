@@ -80,3 +80,34 @@ export const CORS_PROXY_URL = 'https://corsproxy.io/?';
 // export const CORS_PROXY_URL = 'https://my-proxy.example.com/?url='; 
 ```
 
+## Notes
+
+Building this app was my first experiment with Google's Gemini Code
+Assistant in AI Studio.  It's probably pretty obvious that this was
+fully AI generated, so it's been a learning experience.  I am not a
+JavaScript engineer, but I made this app in an afternoon, so in that
+sense it's a success.
+
+Still, while the first thing it spit out worked quite well, fixing it
+up took a lot of back and forth.  In the end the experience did
+degrade and I kept thinking of things I wanted to change.  Right now I
+am quite happy with it but I noticed problems on Chrome Mobile and the
+icons don't display right in Firefox Mobile.  But it's quite usable
+for my purposes, so I stop here for now, maybe I'll come back to it
+and fix these things next time I want to experiment with agents.
+
+I'm very happy I could generate a whole app like this, to use for my
+own purposes, I hope anyone else also finds it useful.  I'll be doing
+more of these kind of one-off apps in the future. I know there is a
+lot of anti-AI sentiment and it is generally for good reason, but I
+think this is one thing that AI really enables and I find it fun to
+explore.  I am learning how to use these things, and I think we all
+are, so small projects like this make for nice little experiments, and
+you get a working tool out of it when you're done!
+
+Enjoy.
+
+Stephen Sinclair <radarsat1@gmail.com>
+
+2025
+
