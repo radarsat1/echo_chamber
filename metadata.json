@@ -1,0 +1,5 @@
+{
+  "name": "Echo Chamber: RSS & Social Aggregator",
+  "description": "An RSS feed aggregator that finds discussions on Reddit and Hacker News. View articles and their corresponding social media comments in one place, with AI-powered summaries.",
+  "requestFramePermissions": []
+}
