@@ -1,8 +1,8 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Comment } from '../types';
-import { HackerNewsIcon, RedditIcon, ExternalLinkIcon } from './icons';
+import { ExternalLinkIcon } from './icons';
 import Spinner from './Spinner';
+import CommentTree from './CommentTree';
 
 interface CommentSectionProps {
   comments: Comment[];
@@ -12,8 +12,15 @@ interface CommentSectionProps {
   isFetching?: boolean;
 }
 
+const PAGINATION_COUNT = 15;
+
 const CommentSection: React.FC<CommentSectionProps> = ({ comments, source, error, sourceUrl, isFetching }) => {
+  const [visibleCount, setVisibleCount] = useState(PAGINATION_COUNT);
   const sourceName = source === 'hn' ? 'Hacker News' : 'Reddit';
+
+  const handleLoadMore = () => {
+    setVisibleCount(prev => prev + PAGINATION_COUNT);
+  };
 
   if (isFetching && comments.length === 0 && !error) {
     return (
@@ -46,17 +53,19 @@ const CommentSection: React.FC<CommentSectionProps> = ({ comments, source, error
     );
   }
 
+  const visibleComments = comments.slice(0, visibleCount);
+
   return (
     <div className="space-y-4">
-      {comments.map(comment => (
-        <div key={comment.id} className="bg-primary p-3 rounded-lg">
-          <div className="flex items-center text-sm text-text-secondary mb-2">
-            {source === 'hn' ? <HackerNewsIcon className="w-4 h-4 mr-2 text-[#FF6600]" /> : <RedditIcon className="w-4 h-4 mr-2 text-[#FF4500]" />}
-            <a href={comment.url} target="_blank" rel="noopener noreferrer" className="font-bold hover:underline">{comment.author}</a>
-          </div>
-          <div className="prose prose-sm prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: comment.body }} />
-        </div>
-      ))}
+      <CommentTree comments={visibleComments} source={source} />
+      {visibleCount < comments.length && (
+        <button
+          onClick={handleLoadMore}
+          className="w-full bg-accent hover:bg-gray-600 text-light font-semibold py-2 px-4 rounded-lg transition-colors"
+        >
+          Load More Comments ({comments.length - visibleCount} remaining)
+        </button>
+      )}
     </div>
   );
 };

@@ -16,7 +16,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
       <div className="flex justify-between items-start">
         <div className="flex-1 min-w-0">
           <p className="text-xs text-highlight font-semibold truncate">{article.feedName}</p>
-          <h2 className="text-lg font-bold text-light mt-1">{article.title}</h2>
+          <h2 className="text-lg font-bold text-light mt-1 truncate">{article.title}</h2>
         </div>
         <div className="flex flex-col items-end space-y-2 ml-4 flex-shrink-0">
           <div className="flex items-center space-x-2 text-sm text-text-secondary">

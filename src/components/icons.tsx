@@ -13,12 +13,6 @@ export const HackerNewsIcon: React.FC<{ className?: string }> = ({ className }) 
   </svg>
 );
 
-export const RefreshIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.664 0l3.181-3.183m-11.664 0l4.992-4.993m-4.993 0l-3.181 3.183a8.25 8.25 0 000 11.664l3.181 3.183" />
-  </svg>
-);
-
 export const BackIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -31,9 +25,27 @@ export const ExternalLinkIcon: React.FC<{ className?: string }> = ({ className }
   </svg>
 );
 
+
+// Reverted to Unicode Icons with better font support
+export const RefreshIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <span className={className} role="img" aria-label="Refresh">🗘</span>
+);
+
 export const SettingsIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527c.43-.306.98-.172 1.213.26l.515.892c.232.403.126.906-.247 1.147l-.737.527c-.35.25-.56.678-.56 1.107v1.185c0 .428.21.857.56 1.107l.737.527c.373.24.48.744.247 1.147l-.515.892c-.233.432-.784.566-1.213.26l-.737-.527c-.35-.25-.807-.272-1.205-.108-.396.165-.71.506-.78.93l-.149.894c-.09.542-.56.94-1.11.94h-1.093c-.55 0-1.02-.398-1.11-.94l-.149-.894c-.07-.424-.384-.764-.78-.93-.398-.164-.855-.142-1.205-.108l-.737.527c-.43.306-.98-.172-1.213-.26l-.515-.892c-.232-.403-.126-.906.247-1.147l.737-.527c.35-.25.56-.678.56-1.107V12.5c0-.428-.21-.857-.56-1.107l-.737-.527c-.373-.24-.48-.744-.247-1.147l.515-.892c.233-.432.784-.566-1.213.26l.737-.527c.35-.25.807-.272 1.205-.108.396.165.71.506.78.93l.149.894z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-  </svg>
+    <span className={className} role="img" aria-label="Settings">⛭</span>
+);
+
+export const ChatIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <span className={className} role="img" aria-label="Show all articles">🗪</span>
+);
+
+export const ChatSlashIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <div className={`relative inline-block ${className}`}>
+    <span role="img" aria-label="Hide articles with no comments">🗪</span>
+    <span className="absolute top-1/2 left-1/2 w-full h-[2px] bg-red-500 transform -translate-x-1/2 -translate-y-1/2 -rotate-45"></span>
+  </div>
+);
+
+export const DownloadIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <span className={className} role="img" aria-label="Download">⇓</span>
 );

@@ -1,12 +1,11 @@
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useFeedManager } from '../hooks/useFeedManager';
-import { Article, Comment } from '../types';
+import { Article } from '../types';
 import Spinner from './Spinner';
 import CommentSection from './CommentSection';
-import { BackIcon, ExternalLinkIcon } from './icons';
-import { summarizeCommentsWithGemini } from '../services/geminiService';
+import { BackIcon, ExternalLinkIcon, RefreshIcon } from './icons';
 
 const ArticleDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,45 +13,19 @@ const ArticleDetail: React.FC = () => {
   
   const [article, setArticle] = useState<Article | null>(null);
   const [activeTab, setActiveTab] = useState<'hn' | 'reddit'>('hn');
-  const [isSummarizing, setIsSummarizing] = useState(false);
-  const [summary, setSummary] = useState('');
-  const [summaryError, setSummaryError] = useState('');
 
   useEffect(() => {
     const foundArticle = articles.find(a => a.id === id);
     if (foundArticle) {
       setArticle(foundArticle);
-      
       // Fetch social data if it hasn't been fetched
       fetchSocialData(foundArticle.id);
-
-      // Default to the tab with more comments if data is available
-      if (foundArticle.social.reddit.commentCount > foundArticle.social.hn.commentCount) {
-        setActiveTab('reddit');
-      } else {
-        setActiveTab('hn');
-      }
     }
   }, [id, articles, fetchSocialData]);
 
-  const allComments = useMemo(() => {
-    if (!article) return [];
-    return [...article.social.hn.comments, ...article.social.reddit.comments];
-  }, [article]);
-
-  const handleSummarize = async () => {
-    if (!article || allComments.length === 0) return;
-    setIsSummarizing(true);
-    setSummary('');
-    setSummaryError('');
-    try {
-      const result = await summarizeCommentsWithGemini(allComments, article.title);
-      setSummary(result);
-    } catch (error) {
-      console.error("Gemini summary failed:", error);
-      setSummaryError('Failed to generate summary. The AI model might be unavailable.');
-    } finally {
-      setIsSummarizing(false);
+  const handleRefreshComments = () => {
+    if (article) {
+      fetchSocialData(article.id, true);
     }
   };
 
@@ -68,8 +41,8 @@ const ArticleDetail: React.FC = () => {
         <Link to="/" className="p-2 rounded-full hover:bg-accent mr-2" aria-label="Back to list">
           <BackIcon className="w-6 h-6" />
         </Link>
-        <a href={article.link} target="_blank" rel="noopener noreferrer" className="text-xl sm:text-2xl font-bold text-light hover:text-highlight transition-colors flex-1 min-w-0">
-          <span className="truncate">{article.title}</span>
+        <a href={article.link} target="_blank" rel="noopener noreferrer" className="text-xl sm:text-2xl font-bold text-light hover:text-highlight transition-colors flex-1 min-w-0 break-words">
+          {article.title}
         </a>
          <a href={article.link} target="_blank" rel="noopener noreferrer" className="p-2 rounded-full hover:bg-accent ml-2 flex-shrink-0">
           <ExternalLinkIcon className="w-6 h-6"/>
@@ -78,31 +51,18 @@ const ArticleDetail: React.FC = () => {
 
       <div className="prose prose-invert max-w-none text-text-secondary bg-primary rounded-lg p-4" dangerouslySetInnerHTML={descriptionHtml} />
       
-      <div className="my-6">
-        <h3 className="text-lg font-semibold mb-2 text-light">Discussion Summary</h3>
-        {allComments.length > 0 ? (
-          <>
-            <button
-              onClick={handleSummarize}
-              disabled={isSummarizing}
-              className="bg-highlight text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-wait"
-            >
-              {isSummarizing ? 'Thinking...' : 'Summarize with AI'}
-            </button>
-            {isSummarizing && <div className="mt-4"><Spinner /></div>}
-            {summaryError && <p className="mt-4 text-red-400">{summaryError}</p>}
-            {summary && (
-              <div className="mt-4 p-4 bg-primary rounded-lg prose prose-invert max-w-none whitespace-pre-wrap">
-                <p>{summary}</p>
-              </div>
-            )}
-          </>
-        ) : (
-          <p className="text-text-secondary">No comments found to summarize.</p>
-        )}
+      <div className="flex justify-between items-center mt-6 mb-2">
+        <h3 className="text-lg font-semibold text-light">Comments</h3>
+        <button
+          onClick={handleRefreshComments}
+          disabled={article.social.isFetching}
+          className="p-2 rounded-full text-text-secondary hover:bg-accent hover:text-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          aria-label="Refresh Comments"
+        >
+          <RefreshIcon className={`text-xl ${article.social.isFetching ? 'animate-spin-slow' : ''}`} />
+        </button>
       </div>
 
-      <h3 className="text-lg font-semibold mt-6 mb-2 text-light">Comments</h3>
       <div className="border-b border-accent flex">
         <button
           onClick={() => setActiveTab('hn')}

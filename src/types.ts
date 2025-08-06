@@ -1,13 +1,15 @@
-
 export interface Comment {
   id: string;
   author: string;
   body: string;
   url: string;
+  depth: number;
+  children: Comment[];
 }
 
 export interface SocialData {
   isFetching?: boolean;
+  lastSocialCheck: number | null;
   hn: {
     id: number | null;
     url: string | null;

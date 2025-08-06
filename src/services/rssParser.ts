@@ -1,4 +1,3 @@
-
 import { Article, Feed } from '../types';
 
 // Simple hashing function for creating unique IDs
@@ -19,7 +18,7 @@ const getElementText = (element: Element, tagName: string): string => {
 
 export const parseRssFeed = (xmlString: string, feed: Feed): Article[] => {
   const parser = new DOMParser();
-  const doc = parser.parseFromString(xmlString, "application/xml");
+  const doc = parser.parseFromString(xmlString, "text/xml"); // Corrected MIME type for jsdom compatibility
   const errorNode = doc.querySelector("parsererror");
   if (errorNode) {
       console.error("Error parsing XML:", errorNode.textContent);
@@ -53,6 +52,7 @@ export const parseRssFeed = (xmlString: string, feed: Feed): Article[] => {
       feedUrl: feed.url,
       social: {
         isFetching: false,
+        lastSocialCheck: null,
         hn: { id: null, url: null, comments: [], commentCount: 0 },
         reddit: { url: null, comments: [], commentCount: 0 },
       },
